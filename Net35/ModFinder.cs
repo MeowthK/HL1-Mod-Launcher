@@ -41,6 +41,17 @@ namespace Net35
                             icon = System.Drawing.Image.FromFile(directories[i] + "//game.ico");
                         else if (System.IO.File.Exists(directories[i] + "//" + modname + ".ico"))
                             icon = System.Drawing.Image.FromFile(directories[i] + "//" + modname + ".ico");
+                        else
+                        {
+                            foreach (string file in System.IO.Directory.GetFiles(directories[i]))
+                            {
+                                if (file.EndsWith(".ico"))
+                                {
+                                    icon = System.Drawing.Image.FromFile(file);
+                                    break;
+                                }
+                            }
+                        }
 
                         var mod = new HLMOD(name, modname, version, string.Empty, icon);
                         mods.Add(mod);

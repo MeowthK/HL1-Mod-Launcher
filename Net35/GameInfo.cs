@@ -11,6 +11,16 @@ namespace Net35
 {
     public partial class GameInfo : Button
     {
+        public static event EventHandler StatClick;
+
+        protected virtual void OnStatClick(EventArgs e)
+        {
+            EventHandler handler = StatClick;
+
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
         private static GameInfo lastClickedControl = null;
 
         private HLMOD modInfo = null;
@@ -46,6 +56,8 @@ namespace Net35
                     ContainerControl.Controls.Add(this.ArgPanels);
 
                 lastClickedControl = this;
+
+                OnStatClick(EventArgs.Empty);
             };
         }
 

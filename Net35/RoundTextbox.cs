@@ -8,6 +8,7 @@ namespace Net35
     public partial class RoundTextbox : UserControl
     {
         public new event EventHandler TextChanged;
+        public new string Text { get { return input.Text; } set { input.Text = value; } }
 
         protected new virtual void OnTextChanged(EventArgs e)
         {
@@ -29,7 +30,9 @@ namespace Net35
 
         protected override void OnSizeChanged(EventArgs e)
         {
+            input.Width = this.Width - (this.Padding.Left + this.Padding.Right);
             this.Height = input.Bottom + this.Padding.Bottom;
+            this.Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs e)

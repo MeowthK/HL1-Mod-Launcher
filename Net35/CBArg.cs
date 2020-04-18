@@ -6,11 +6,27 @@ namespace Net35
 {
     public class CBArg : CheckBox
     {
+        public static event EventHandler StatChecked;
+
+        protected virtual void OnStatChecked(EventArgs e)
+        {
+            EventHandler handler = StatChecked;
+
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
         public string Argument { get; set; }
 
         public CBArg()
         {
             InitializeComponent();
+        }
+
+        protected override void OnCheckedChanged(EventArgs e)
+        {
+            OnStatChecked(EventArgs.Empty);
+            base.OnCheckedChanged(e);
         }
 
         private void InitializeComponent()

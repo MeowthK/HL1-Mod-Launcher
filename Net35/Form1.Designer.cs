@@ -42,6 +42,9 @@
             this.missingPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.BtnLaunchCont = new System.Windows.Forms.Panel();
+            this.AddParamCont = new System.Windows.Forms.Panel();
+            this.rtbAddParams = new Net35.RoundTextbox();
             this.rtbSearcher = new Net35.RoundTextbox();
             this.gamePanel.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -49,6 +52,8 @@
             this.launch_NR.SuspendLayout();
             this.argContents.SuspendLayout();
             this.missingPanel.SuspendLayout();
+            this.BtnLaunchCont.SuspendLayout();
+            this.AddParamCont.SuspendLayout();
             this.SuspendLayout();
             // 
             // gamePanel
@@ -145,7 +150,8 @@
             // launch_NR
             // 
             this.launch_NR.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(50)))), ((int)(((byte)(72)))));
-            this.launch_NR.Controls.Add(this.btnLaunch_NR);
+            this.launch_NR.Controls.Add(this.AddParamCont);
+            this.launch_NR.Controls.Add(this.BtnLaunchCont);
             this.launch_NR.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.launch_NR.Location = new System.Drawing.Point(360, 631);
             this.launch_NR.Name = "launch_NR";
@@ -164,7 +170,7 @@
             this.btnLaunch_NR.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnLaunch_NR.Image = ((System.Drawing.Image)(resources.GetObject("btnLaunch_NR.Image")));
             this.btnLaunch_NR.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLaunch_NR.Location = new System.Drawing.Point(465, 15);
+            this.btnLaunch_NR.Location = new System.Drawing.Point(40, 0);
             this.btnLaunch_NR.Name = "btnLaunch_NR";
             this.btnLaunch_NR.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnLaunch_NR.Size = new System.Drawing.Size(160, 39);
@@ -226,6 +232,39 @@
             this.label2.Text = "Try putting me:\r\n • Inside the game directory\r\n   (Ex. C:\\Steam\\steamapps\\common\\" +
                 "Half-Life)";
             // 
+            // BtnLaunchCont
+            // 
+            this.BtnLaunchCont.Controls.Add(this.btnLaunch_NR);
+            this.BtnLaunchCont.Dock = System.Windows.Forms.DockStyle.Right;
+            this.BtnLaunchCont.Location = new System.Drawing.Point(425, 15);
+            this.BtnLaunchCont.Name = "BtnLaunchCont";
+            this.BtnLaunchCont.Size = new System.Drawing.Size(200, 39);
+            this.BtnLaunchCont.TabIndex = 2;
+            // 
+            // AddParamCont
+            // 
+            this.AddParamCont.Controls.Add(this.rtbAddParams);
+            this.AddParamCont.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddParamCont.Location = new System.Drawing.Point(15, 15);
+            this.AddParamCont.Name = "AddParamCont";
+            this.AddParamCont.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.AddParamCont.Size = new System.Drawing.Size(410, 39);
+            this.AddParamCont.TabIndex = 3;
+            // 
+            // rtbAddParams
+            // 
+            this.rtbAddParams.BackColor = System.Drawing.Color.Transparent;
+            this.rtbAddParams.Dock = System.Windows.Forms.DockStyle.Top;
+            this.rtbAddParams.Location = new System.Drawing.Point(0, 3);
+            this.rtbAddParams.Margin = new System.Windows.Forms.Padding(4);
+            this.rtbAddParams.Name = "rtbAddParams";
+            this.rtbAddParams.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.rtbAddParams.Size = new System.Drawing.Size(410, 33);
+            this.rtbAddParams.T_Color = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(25)))), ((int)(((byte)(27)))));
+            this.rtbAddParams.T_FColor = System.Drawing.SystemColors.Info;
+            this.rtbAddParams.T_Image = ((System.Drawing.Image)(resources.GetObject("rtbAddParams.T_Image")));
+            this.rtbAddParams.TabIndex = 1;
+            // 
             // rtbSearcher
             // 
             this.rtbSearcher.BackColor = System.Drawing.Color.Transparent;
@@ -265,6 +304,8 @@
             this.argContents.ResumeLayout(false);
             this.missingPanel.ResumeLayout(false);
             this.missingPanel.PerformLayout();
+            this.BtnLaunchCont.ResumeLayout(false);
+            this.AddParamCont.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -285,6 +326,9 @@
         private System.Windows.Forms.Panel missingPanel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private RoundTextbox rtbAddParams;
+        private System.Windows.Forms.Panel AddParamCont;
+        private System.Windows.Forms.Panel BtnLaunchCont;
     }
 }
 

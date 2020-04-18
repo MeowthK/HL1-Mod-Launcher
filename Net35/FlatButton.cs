@@ -38,6 +38,33 @@ namespace Net35
             }
         }
 
+        public Item[] IArguments
+        {
+            get
+            {
+                if (panel == null)
+                    return null;
+
+                List<Item> item = new List<Item>();
+
+                foreach (Control arg in panel.Controls)
+                {
+                    if (arg is CBArg)
+                    {
+                        var cb = arg as CBArg;
+
+                        Item i = new Item();
+                        i.Name = cb.Argument;
+                        i.Description = cb.Text;
+
+                        item.Add(i);
+                    }
+                }
+
+                return item.ToArray();
+            }
+        }
+
         public string AllArguments
         {
             get

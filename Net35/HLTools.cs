@@ -20,11 +20,16 @@ namespace Net35
             {
                 if (!CheckExecutableExists("hl.exe"))
                 {
-                    System.Windows.Forms.MessageBox.Show(mod.Executable + " and hl.exe was not found, cannot launch the game.", "Executable Not Found");
+                    System.Windows.Forms.MessageBox.Show("hl.exe was not found, cannot launch the game.", "Executable Not Found", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                     return;
                 }
 
                 proc_arg = " -game " + mod.ModFolder;
+            }
+            else if (!CheckExecutableExists(mod.Executable))
+            {
+                System.Windows.Forms.MessageBox.Show(mod.Executable + " was not found and hl.exe is non-existent, cannot launch the game.", "Executable Not Found", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return;
             }
             else
                 filename = mod.Executable;

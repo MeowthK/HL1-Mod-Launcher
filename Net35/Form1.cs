@@ -19,20 +19,6 @@ namespace Net35
 
         protected override void OnLoad(EventArgs e)
         {
-            //if (!HLTools.CheckHLExists())
-            //{
-            //    DialogResult result;
-
-            //    while ((result = MessageBox.Show("hl.exe was not found!", "Warning", MessageBoxButtons.AbortRetryIgnore)) == System.Windows.Forms.DialogResult.Retry)
-            //    {
-            //        if (HLTools.CheckHLExists())
-            //            break;
-            //    }
-
-            //    if (result == System.Windows.Forms.DialogResult.Abort)
-            //        Application.Exit();
-            //}
-
             string cfgFile = Directory.GetCurrentDirectory() + "//modlauncher//commandlist.cfg";
             Dictionary<string, Category[]> modCats = new Dictionary<string, Category[]>();
             List<Item> modexecs = new List<Item>();
@@ -110,8 +96,9 @@ namespace Net35
                         modCats.Add(modname, catList.ToArray());
                     }
                 }
-                catch {
-                    MessageBox.Show("commandlist.cfg is malformed.", "File Parse Error");
+                catch
+                {
+                    MessageBox.Show("commandlist.cfg is malformed.", "File Parse Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
 
@@ -166,7 +153,7 @@ namespace Net35
                     }
                     catch
                     {
-                        MessageBox.Show("Cannot parse commandlist.cfg");
+                        MessageBox.Show("Cannot parse commandlist.cfg", "File Parse Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
 
@@ -180,7 +167,19 @@ namespace Net35
 
                         foreach (var cv in cat.Items)
                         {
-                            if (categoryList.FirstOrDefault( p => p.AllArguments.Contains(cv.Name)) == null)
+                            bool flag = true;
+
+                            categoryList.ForEach((a) =>
+                            {
+                                if (a.IArguments.FirstOrDefault(p => p.Name == cv.Name) != null)
+                                {
+                                    flag = false;
+                                    return;
+                                }
+                            });
+
+                            if (flag)
+                            //if (categoryList.FirstOrDefault( p => p.IArguments.) == null)
                             {
                                 var arg = new CBArg();
                                 arg.Argument = cv.Name;
@@ -233,21 +232,73 @@ namespace Net35
             if (gameList.Controls.Count > 0 && gameList.Controls[gameList.Controls.Count - 1] is GameInfo)
                 (gameList.Controls[gameList.Controls.Count - 1] as GameInfo).PerformClick();
 
+            CBArg.StatChecked += UpdateCommands;
+            GameInfo.StatClick += UpdateCommands;
+
             btnLaunch_NR.Click += (o, ev) =>
             {
                 if (GameInfo.SelectedMod != null)
-                {
-                    var gi = GameInfo.SelectedMod.ArgPanels.Tabs;
-
-                    string arg = string.Empty;
-                    foreach (var tab in gi)
-                        arg += tab.Arguments;
-
-                    HLTools.LaunchMod(GameInfo.SelectedMod.ModInfo, arg);
-                }
+                    HLTools.LaunchMod(GameInfo.SelectedMod.ModInfo, rtbAddParams.Text);
             };
 
             base.OnLoad(e);
+        }
+
+        private void UpdateCommands(object sender, EventArgs e)
+        {
+            if (GameInfo.SelectedMod != null)
+            {
+                var gi = GameInfo.SelectedMod.ArgPanels.Tabs;
+
+                string arg = string.Empty;
+                foreach (var tab in gi)
+                    arg += tab.Arguments;
+
+                rtbAddParams.Text = MergeDupStrings(GetArgs(arg));
+            }
+        }
+
+        private string MergeDupStrings(string[] a)
+        {
+            HashSet<string> c = new HashSet<string>();
+            string c_s = string.Empty;
+
+            if (a != null)
+            {
+                foreach (var a_s in a)
+                    c.Add(a_s);
+            }
+
+            foreach (var c_ss in c)
+                c_s += c_ss + " ";
+
+            return c_s;
+        }
+
+        private string[] GetArgs(string arg)
+        {
+            List<string> a = new List<string>();
+
+            for (int i = 0; i < arg.Length; i++)
+            {
+                string b = string.Empty;
+                string c = string.Empty;
+
+                while (i < arg.Length)
+                {
+                    if (i + 1 < arg.Length && (arg[i + 1] == '-' || arg[i + 1] == '+'))
+                        break;
+
+                    b += arg[i++];
+                }
+
+                b = b.Trim();
+
+                if (b.Length > 0)
+                    a.Add(b);
+            }
+
+            return a.ToArray();
         }
 
         private string SeekUntil(ref int pos, string stream, char qualifier)
