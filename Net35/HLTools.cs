@@ -5,22 +5,38 @@ namespace Net35
 {
     public static class HLTools
     {
-        public static bool CheckHLExists()
+        public static bool CheckExecutableExists(string execFile)
         {
-            return System.IO.File.Exists(System.IO.Directory.GetCurrentDirectory() + "//hl.exe");
+            return System.IO.File.Exists(System.IO.Directory.GetCurrentDirectory() + "//" + execFile);
         }
 
         public static void LaunchMod(HLMOD mod, string arguments)
         {
-            if (CheckHLExists())
+            bool executableExists = CheckExecutableExists(mod.Executable);
+            var filename = "hl.exe";
+            var proc_arg = string.Empty;
+
+            if (mod.Executable == string.Empty)
             {
-                using (var process = new Process())
+                if (!CheckExecutableExists("hl.exe"))
                 {
-                    process.StartInfo.WorkingDirectory = System.IO.Directory.GetCurrentDirectory();
-                    process.StartInfo.FileName = "hl.exe";
-                    process.StartInfo.Arguments = " -game " + mod.ModFolder + " " + arguments;
-                    process.Start();
+                    System.Windows.Forms.MessageBox.Show(mod.Executable + " and hl.exe was not found, cannot launch the game.", "Executable Not Found");
+                    return;
                 }
+
+                proc_arg = " -game " + mod.ModFolder;
+            }
+            else
+                filename = mod.Executable;
+
+            proc_arg += " " + arguments;
+
+            using (var process = new Process())
+            {
+                process.StartInfo.WorkingDirectory = System.IO.Directory.GetCurrentDirectory();
+                process.StartInfo.FileName = filename;
+                process.StartInfo.Arguments = proc_arg;
+                process.Start();
             }
         }
     }

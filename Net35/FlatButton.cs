@@ -59,6 +59,7 @@ namespace Net35
         {
             InitializeComponent();
             panel = new Panel();
+            panel.AutoScroll = true;
             panel.Dock = DockStyle.Fill;
             panel.Hide();
 
@@ -77,7 +78,13 @@ namespace Net35
 
             TextChanged += (o, e) =>
             {
-                this.Width = (int)((float) this.Text.Length * this.Font.Size);
+                using (Graphics g = this.CreateGraphics())
+                {
+                    SizeF stringSize = g.MeasureString(this.Text, this.Font);
+                    this.Width = (int) stringSize.Width + 25;
+                }
+
+                //this.Width = (int)((float) this.Text.Length * this.Font.Size);
             };
         }
     }

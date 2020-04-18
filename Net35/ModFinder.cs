@@ -42,7 +42,7 @@ namespace Net35
                         else if (System.IO.File.Exists(directories[i] + "//" + modname + ".ico"))
                             icon = System.Drawing.Image.FromFile(directories[i] + "//" + modname + ".ico");
 
-                        var mod = new HLMOD(name, modname, version, icon);
+                        var mod = new HLMOD(name, modname, version, string.Empty, icon);
                         mods.Add(mod);
                     }
                 }

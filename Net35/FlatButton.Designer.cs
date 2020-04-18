@@ -34,14 +34,14 @@
             // 
             this.Dock = System.Windows.Forms.DockStyle.Left;
             this.FlatAppearance.BorderSize = 0;
-            this.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(60)))), ((int)(((byte)(82)))));
-            this.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(70)))), ((int)(((byte)(92)))));
+            this.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(70)))), ((int)(((byte)(92)))));
+            this.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(60)))), ((int)(((byte)(82)))));
             this.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Margin = new System.Windows.Forms.Padding(0);
+            this.Size = new System.Drawing.Size(75, 48);
             this.Text = "I\'m just a placeholder :(";
-            this.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ResumeLayout(false);
 
         }

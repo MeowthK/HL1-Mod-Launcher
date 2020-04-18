@@ -41,7 +41,7 @@
             this.content.Location = new System.Drawing.Point(0, 49);
             this.content.Name = "content";
             this.content.Padding = new System.Windows.Forms.Padding(15);
-            this.content.Size = new System.Drawing.Size(345, 241);
+            this.content.Size = new System.Drawing.Size(775, 436);
             this.content.TabIndex = 1;
             // 
             // flpTabs
@@ -51,7 +51,7 @@
             this.flpTabs.Dock = System.Windows.Forms.DockStyle.Top;
             this.flpTabs.Location = new System.Drawing.Point(0, 0);
             this.flpTabs.Name = "flpTabs";
-            this.flpTabs.Size = new System.Drawing.Size(345, 49);
+            this.flpTabs.Size = new System.Drawing.Size(775, 49);
             this.flpTabs.TabIndex = 0;
             // 
             // TabPanels
@@ -61,7 +61,7 @@
             this.Controls.Add(this.flpTabs);
             this.DoubleBuffered = true;
             this.Name = "TabPanels";
-            this.Size = new System.Drawing.Size(345, 290);
+            this.Size = new System.Drawing.Size(775, 485);
             this.ResumeLayout(false);
 
         }

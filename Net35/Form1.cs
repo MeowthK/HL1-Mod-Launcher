@@ -35,6 +35,7 @@ namespace Net35
 
             string cfgFile = Directory.GetCurrentDirectory() + "//modlauncher//commandlist.cfg";
             Dictionary<string, Category[]> modCats = new Dictionary<string, Category[]>();
+            List<Item> modexecs = new List<Item>();
             bool fileExists = false;
             Category[] baseCat = null;
 
@@ -44,50 +45,73 @@ namespace Net35
 
                 string cnt = File.ReadAllText(cfgFile);
 
-                foreach (var snippet in cnt.Split('}'))
+                // ignore comments
+                while (cnt.Contains("//"))
                 {
-                    var catList = new List<Category>();
-                    var strimmed = snippet.Trim();
+                    int start = cnt.IndexOf("//");
+                    int index = start + 1;
+                    while (index < cnt.Length && cnt[index] != '\n')
+                        index++;
 
-                    if (strimmed.Length == 0)
-                        continue;
+                    cnt = cnt.Remove(start, index - start);
+                }
 
-                    // get mod name
-                    string modname = strimmed.Remove(strimmed.IndexOf('{')).Trim();
-
-                    // get category name
-                    while (strimmed.Contains('"'))
+                try
+                {
+                    foreach (var snippet in cnt.Split('}'))
                     {
-                        Category category_o = new Category();
+                        var catList = new List<Category>();
+                        var strimmed = snippet.Trim();
 
-                        int endIndex = strimmed.IndexOf('"') + 1;
-                        while (strimmed[endIndex] != '"')
-                            endIndex++;
+                        if (strimmed.Length == 0)
+                            continue;
 
-                        string category = GetSubString(strimmed, '"', '"');
-                        strimmed = strimmed.Replace('"' + category + '"', "");
-                        category_o.Name = category.Trim();
+                        // get mod name
+                        string modname = strimmed.Remove(strimmed.IndexOf('{')).Trim();
 
-                        while (strimmed.Contains('[') && strimmed.IndexOf('[') < endIndex)
+                        if (modname.Contains('<'))
                         {
                             Item item = new Item();
 
-                            string argument = GetSubString(strimmed, '[', ']');
-                            strimmed = strimmed.Replace('[' + argument + ']', "");
-                            item.Name = argument.Trim();
+                            item.Description = GetSubString(modname, '<', '>').Trim();
+                            modname = strimmed.Remove(modname.IndexOf('<')).Trim();
+                            item.Name = modname;
 
-                            string description = GetSubString(strimmed, '[', ']');
-                            strimmed = strimmed.Replace('[' + description + ']', "");
-                            item.Description = description.Trim();
-
-                            category_o.AddItem(item);
+                            modexecs.Add(item);
                         }
 
-                        catList.Add(category_o);
-                        MessageBox.Show(modname + ": " + category_o.ToString());
-                    }
+                        // get category name
+                        while (strimmed.Contains('"'))
+                        {
+                            Category category_o = new Category();
 
-                    modCats.Add(modname, catList.ToArray());
+                            string category = GetSubString(strimmed, '"', '"');
+                            strimmed = strimmed.Replace('"' + category + '"', "").Trim();
+                            category_o.Name = category.Trim();
+
+                            while (strimmed.Contains('[') && (strimmed.IndexOf('[') < strimmed.IndexOf('"') || !strimmed.Contains('"')))
+                            {
+                                Item item = new Item();
+
+                                string argument = GetSubString(strimmed, '[', ']');
+                                strimmed = strimmed.Replace('[' + argument + ']', "");
+                                item.Name = argument.Trim();
+
+                                string description = GetSubString(strimmed, '[', ']');
+                                strimmed = strimmed.Replace('[' + description + ']', "");
+                                item.Description = description.Trim();
+
+                                category_o.AddItem(item);
+                            }
+
+                            catList.Add(category_o);
+                        }
+
+                        modCats.Add(modname, catList.ToArray());
+                    }
+                }
+                catch {
+                    MessageBox.Show("commandlist.cfg is malformed.", "File Parse Error");
                 }
             }
 
@@ -96,11 +120,21 @@ namespace Net35
 
             foreach (var mod in ModFinder.GetMods)
             {
+                missingPanel.Dispose();
+
                 var gameinfo = new GameInfo(mod);
                 var categoryList = new List<FlatButton>();
 
                 if (fileExists && modCats.ContainsKey(mod.ModFolder))
                 {
+                    modexecs.ForEach((item) => {
+                        if (item.Name == mod.ModFolder)
+                        {
+                            mod.Executable = item.Description;
+                            return;
+                        }
+                    });
+
                     Category[] cats = null;
 
                     try
@@ -195,6 +229,9 @@ namespace Net35
                     }
                 }
             };
+
+            if (gameList.Controls.Count > 0 && gameList.Controls[gameList.Controls.Count - 1] is GameInfo)
+                (gameList.Controls[gameList.Controls.Count - 1] as GameInfo).PerformClick();
 
             btnLaunch_NR.Click += (o, ev) =>
             {

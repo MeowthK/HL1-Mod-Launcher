@@ -39,11 +39,16 @@
             this.launch_NR = new System.Windows.Forms.Panel();
             this.btnLaunch_NR = new System.Windows.Forms.Button();
             this.argContents = new System.Windows.Forms.Panel();
+            this.missingPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.rtbSearcher = new Net35.RoundTextbox();
             this.gamePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlTopBar.SuspendLayout();
             this.launch_NR.SuspendLayout();
+            this.argContents.SuspendLayout();
+            this.missingPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // gamePanel
@@ -170,11 +175,56 @@
             // 
             // argContents
             // 
+            this.argContents.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.argContents.Controls.Add(this.missingPanel);
             this.argContents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.argContents.Location = new System.Drawing.Point(360, 49);
             this.argContents.Name = "argContents";
             this.argContents.Size = new System.Drawing.Size(640, 582);
             this.argContents.TabIndex = 4;
+            // 
+            // missingPanel
+            // 
+            this.missingPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(60)))), ((int)(((byte)(82)))));
+            this.missingPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("missingPanel.BackgroundImage")));
+            this.missingPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.missingPanel.Controls.Add(this.label2);
+            this.missingPanel.Controls.Add(this.label1);
+            this.missingPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.missingPanel.Location = new System.Drawing.Point(0, 0);
+            this.missingPanel.Name = "missingPanel";
+            this.missingPanel.Padding = new System.Windows.Forms.Padding(50);
+            this.missingPanel.Size = new System.Drawing.Size(640, 582);
+            this.missingPanel.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Font = new System.Drawing.Font("Impact", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(50, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(258, 68);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Oops! Looks like I\'m in\r\nthe wrong place...";
+            // 
+            // label2
+            // 
+            this.label2.AutoEllipsis = true;
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.Font = new System.Drawing.Font("Impact", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(50, 118);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.label2.Size = new System.Drawing.Size(375, 79);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Try putting me:\r\n • Inside the game directory\r\n   (Ex. C:\\Steam\\steamapps\\common\\" +
+                "Half-Life)";
             // 
             // rtbSearcher
             // 
@@ -212,6 +262,9 @@
             this.panel1.ResumeLayout(false);
             this.pnlTopBar.ResumeLayout(false);
             this.launch_NR.ResumeLayout(false);
+            this.argContents.ResumeLayout(false);
+            this.missingPanel.ResumeLayout(false);
+            this.missingPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -229,6 +282,9 @@
         private System.Windows.Forms.Panel launch_NR;
         private System.Windows.Forms.Button btnLaunch_NR;
         private System.Windows.Forms.Panel argContents;
+        private System.Windows.Forms.Panel missingPanel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
