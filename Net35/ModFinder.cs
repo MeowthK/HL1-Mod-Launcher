@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Net35
 {
@@ -12,20 +13,71 @@ namespace Net35
             get
             {
                 // get mod directories
-                var directories = System.IO.Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory());
+                var directories = System.IO.Directory.GetDirectories(Directory.GetCurrentDirectory());
                 var mods = new List<HLMOD>();
-                
+                string[] gch = { "gameinfo.txt", "liblist.gam" };
+                string[] efl = { "maps", "models", "sound" };
+                Dictionary<string, string> modmap = new Dictionary<string, string>()
+                {
+                    // GoldSrc Mods
+                    { "cstrike", "Counter-Strike" },
+                    { "valve", "Half-Life" },
+                    { "tfc", "Team Fortress Classic" },
+                    { "ricochet", "Ricochet" },
+                    { "czero", "Condition Zero" },
+                    { "bshift", "Blue Shift" },
+                    { "dmc", "Deathmatch Classic" },
+                    { "op4classic", "Opposing Force" },
+
+                    // Source Mods
+                    { "hl1", "Half-Life Source" },
+                    { "hl2", "Half-Life 2" },
+                    { "tf2", "Team Fortress 2" },
+                    { "portal", "Portal" }
+                };
+
                 for (int i = 0; i < directories.Length; i++)
                 {
-                    if (System.IO.File.Exists(directories[i] + "//liblist.gam"))
-                    {
-                        //game info
-                        string modname = System.IO.Path.GetFileName(directories[i]);
-                        string name = modname;
-                        string version = "Unknown";
-                        System.Drawing.Image icon = null;
+                    int gchi = -1;
+                    string dir = string.Empty;
 
-                        var lines = System.IO.File.ReadAllLines(directories[i] + "//liblist.gam");
+                    for (int j = 0; j < gch.Length; j++)
+                        if (File.Exists(directories[i] + "//" + gch[j]))
+                            gchi = j;
+
+                    if (gchi == -1)
+                    {
+                        string[] dirs = Directory.GetDirectories(directories[i]);
+
+                        for (int j = 0; j < dirs.Length; j++)
+                            dirs[j] = Path.GetFileName(dirs[j]);
+
+                        bool flag = false;
+
+                        foreach (var ef in efl)
+                        {
+                            if (!dirs.Contains(ef))
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+
+                        if (flag)
+                            continue;
+                    }
+                    else
+                        dir = directories[i] + "//" + gch[gchi];
+
+                    //game info
+                    string modname = Path.GetFileName(directories[i]);
+                    string name = modname;
+                    string version = "Unknown";
+                    System.Drawing.Image icon = null;
+
+                    if (dir != string.Empty)
+                    {
+                        var lines = File.ReadAllLines(dir);
 
                         foreach (var line in lines)
                         {
@@ -35,27 +87,40 @@ namespace Net35
                             if (version == "Unknown" && line.Contains("version"))
                                 version = GetToken(line, '\"');
                         }
-
-                        //get icon file (if there's any)
-                        if (System.IO.File.Exists(directories[i] + "//game.ico"))
-                            icon = System.Drawing.Image.FromFile(directories[i] + "//game.ico");
-                        else if (System.IO.File.Exists(directories[i] + "//" + modname + ".ico"))
-                            icon = System.Drawing.Image.FromFile(directories[i] + "//" + modname + ".ico");
-                        else
+                    }
+                    else
+                    {
+                        foreach (var mm in modmap)
                         {
-                            foreach (string file in System.IO.Directory.GetFiles(directories[i]))
+                            if (mm.Key == modname)
                             {
-                                if (file.EndsWith(".ico"))
-                                {
-                                    icon = System.Drawing.Image.FromFile(file);
-                                    break;
-                                }
+                                name = mm.Value;
+                                break;
                             }
                         }
-
-                        var mod = new HLMOD(name, modname, version, string.Empty, icon);
-                        mods.Add(mod);
                     }
+
+                    //get icon file (if there's any)
+                    if (File.Exists(directories[i] + "//game.ico"))
+                        icon = System.Drawing.Image.FromFile(directories[i] + "//game.ico");
+                    else if (File.Exists(directories[i] + "//" + modname + ".ico"))
+                        icon = System.Drawing.Image.FromFile(directories[i] + "//" + modname + ".ico");
+                    else if (File.Exists(directories[i] + "//resource//game.ico"))
+                        icon = System.Drawing.Image.FromFile((directories[i] + "//resource//game.ico"));
+                    else
+                    {
+                        foreach (string file in Directory.GetFiles(directories[i]))
+                        {
+                            if (file.EndsWith(".ico"))
+                            {
+                                icon = System.Drawing.Image.FromFile(file);
+                                break;
+                            }
+                        }
+                    }
+
+                    var mod = new HLMOD(name, modname, version, string.Empty, icon);
+                    mods.Add(mod);
                 }
 
                 return mods.ToArray();

@@ -32,28 +32,28 @@
             this.gamePanel = new System.Windows.Forms.Panel();
             this.gameList = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rtbSearcher = new Net35.RoundTextbox();
             this.btnClose = new System.Windows.Forms.Button();
             this.pnlTopBar = new System.Windows.Forms.Panel();
             this.title = new System.Windows.Forms.Label();
             this.btnMaximize = new System.Windows.Forms.Button();
             this.launch_NR = new System.Windows.Forms.Panel();
+            this.AddParamCont = new System.Windows.Forms.Panel();
+            this.rtbAddParams = new Net35.RoundTextbox();
+            this.BtnLaunchCont = new System.Windows.Forms.Panel();
             this.btnLaunch_NR = new System.Windows.Forms.Button();
             this.argContents = new System.Windows.Forms.Panel();
             this.missingPanel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.BtnLaunchCont = new System.Windows.Forms.Panel();
-            this.AddParamCont = new System.Windows.Forms.Panel();
-            this.rtbAddParams = new Net35.RoundTextbox();
-            this.rtbSearcher = new Net35.RoundTextbox();
+            this.label1 = new System.Windows.Forms.Label();
             this.gamePanel.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlTopBar.SuspendLayout();
             this.launch_NR.SuspendLayout();
+            this.AddParamCont.SuspendLayout();
+            this.BtnLaunchCont.SuspendLayout();
             this.argContents.SuspendLayout();
             this.missingPanel.SuspendLayout();
-            this.BtnLaunchCont.SuspendLayout();
-            this.AddParamCont.SuspendLayout();
             this.SuspendLayout();
             // 
             // gamePanel
@@ -87,6 +87,20 @@
             this.panel1.Padding = new System.Windows.Forms.Padding(10);
             this.panel1.Size = new System.Drawing.Size(358, 52);
             this.panel1.TabIndex = 2;
+            // 
+            // rtbSearcher
+            // 
+            this.rtbSearcher.BackColor = System.Drawing.Color.Transparent;
+            this.rtbSearcher.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbSearcher.Location = new System.Drawing.Point(10, 10);
+            this.rtbSearcher.Margin = new System.Windows.Forms.Padding(4);
+            this.rtbSearcher.Name = "rtbSearcher";
+            this.rtbSearcher.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.rtbSearcher.Size = new System.Drawing.Size(338, 33);
+            this.rtbSearcher.T_Color = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(25)))), ((int)(((byte)(27)))));
+            this.rtbSearcher.T_FColor = System.Drawing.SystemColors.Info;
+            this.rtbSearcher.T_Image = ((System.Drawing.Image)(resources.GetObject("rtbSearcher.T_Image")));
+            this.rtbSearcher.TabIndex = 0;
             // 
             // btnClose
             // 
@@ -159,6 +173,39 @@
             this.launch_NR.Size = new System.Drawing.Size(640, 69);
             this.launch_NR.TabIndex = 3;
             // 
+            // AddParamCont
+            // 
+            this.AddParamCont.Controls.Add(this.rtbAddParams);
+            this.AddParamCont.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddParamCont.Location = new System.Drawing.Point(15, 15);
+            this.AddParamCont.Name = "AddParamCont";
+            this.AddParamCont.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.AddParamCont.Size = new System.Drawing.Size(410, 39);
+            this.AddParamCont.TabIndex = 3;
+            // 
+            // rtbAddParams
+            // 
+            this.rtbAddParams.BackColor = System.Drawing.Color.Transparent;
+            this.rtbAddParams.Dock = System.Windows.Forms.DockStyle.Top;
+            this.rtbAddParams.Location = new System.Drawing.Point(0, 3);
+            this.rtbAddParams.Margin = new System.Windows.Forms.Padding(4);
+            this.rtbAddParams.Name = "rtbAddParams";
+            this.rtbAddParams.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.rtbAddParams.Size = new System.Drawing.Size(410, 33);
+            this.rtbAddParams.T_Color = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(25)))), ((int)(((byte)(27)))));
+            this.rtbAddParams.T_FColor = System.Drawing.SystemColors.Info;
+            this.rtbAddParams.T_Image = ((System.Drawing.Image)(resources.GetObject("rtbAddParams.T_Image")));
+            this.rtbAddParams.TabIndex = 1;
+            // 
+            // BtnLaunchCont
+            // 
+            this.BtnLaunchCont.Controls.Add(this.btnLaunch_NR);
+            this.BtnLaunchCont.Dock = System.Windows.Forms.DockStyle.Right;
+            this.BtnLaunchCont.Location = new System.Drawing.Point(425, 15);
+            this.BtnLaunchCont.Name = "BtnLaunchCont";
+            this.BtnLaunchCont.Size = new System.Drawing.Size(200, 39);
+            this.BtnLaunchCont.TabIndex = 2;
+            // 
             // btnLaunch_NR
             // 
             this.btnLaunch_NR.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(116)))), ((int)(((byte)(218)))));
@@ -203,19 +250,6 @@
             this.missingPanel.Size = new System.Drawing.Size(640, 582);
             this.missingPanel.TabIndex = 0;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Font = new System.Drawing.Font("Impact", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(50, 50);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(258, 68);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Oops! Looks like I\'m in\r\nthe wrong place...";
-            // 
             // label2
             // 
             this.label2.AutoEllipsis = true;
@@ -232,52 +266,18 @@
             this.label2.Text = "Try putting me:\r\n • Inside the game directory\r\n   (Ex. C:\\Steam\\steamapps\\common\\" +
                 "Half-Life)";
             // 
-            // BtnLaunchCont
+            // label1
             // 
-            this.BtnLaunchCont.Controls.Add(this.btnLaunch_NR);
-            this.BtnLaunchCont.Dock = System.Windows.Forms.DockStyle.Right;
-            this.BtnLaunchCont.Location = new System.Drawing.Point(425, 15);
-            this.BtnLaunchCont.Name = "BtnLaunchCont";
-            this.BtnLaunchCont.Size = new System.Drawing.Size(200, 39);
-            this.BtnLaunchCont.TabIndex = 2;
-            // 
-            // AddParamCont
-            // 
-            this.AddParamCont.Controls.Add(this.rtbAddParams);
-            this.AddParamCont.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddParamCont.Location = new System.Drawing.Point(15, 15);
-            this.AddParamCont.Name = "AddParamCont";
-            this.AddParamCont.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.AddParamCont.Size = new System.Drawing.Size(410, 39);
-            this.AddParamCont.TabIndex = 3;
-            // 
-            // rtbAddParams
-            // 
-            this.rtbAddParams.BackColor = System.Drawing.Color.Transparent;
-            this.rtbAddParams.Dock = System.Windows.Forms.DockStyle.Top;
-            this.rtbAddParams.Location = new System.Drawing.Point(0, 3);
-            this.rtbAddParams.Margin = new System.Windows.Forms.Padding(4);
-            this.rtbAddParams.Name = "rtbAddParams";
-            this.rtbAddParams.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.rtbAddParams.Size = new System.Drawing.Size(410, 33);
-            this.rtbAddParams.T_Color = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(25)))), ((int)(((byte)(27)))));
-            this.rtbAddParams.T_FColor = System.Drawing.SystemColors.Info;
-            this.rtbAddParams.T_Image = ((System.Drawing.Image)(resources.GetObject("rtbAddParams.T_Image")));
-            this.rtbAddParams.TabIndex = 1;
-            // 
-            // rtbSearcher
-            // 
-            this.rtbSearcher.BackColor = System.Drawing.Color.Transparent;
-            this.rtbSearcher.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbSearcher.Location = new System.Drawing.Point(10, 10);
-            this.rtbSearcher.Margin = new System.Windows.Forms.Padding(4);
-            this.rtbSearcher.Name = "rtbSearcher";
-            this.rtbSearcher.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.rtbSearcher.Size = new System.Drawing.Size(338, 33);
-            this.rtbSearcher.T_Color = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(25)))), ((int)(((byte)(27)))));
-            this.rtbSearcher.T_FColor = System.Drawing.SystemColors.Info;
-            this.rtbSearcher.T_Image = ((System.Drawing.Image)(resources.GetObject("rtbSearcher.T_Image")));
-            this.rtbSearcher.TabIndex = 0;
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Font = new System.Drawing.Font("Impact", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(50, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(258, 68);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Oops! Looks like I\'m in\r\nthe wrong place...";
             // 
             // Form1
             // 
@@ -301,11 +301,11 @@
             this.panel1.ResumeLayout(false);
             this.pnlTopBar.ResumeLayout(false);
             this.launch_NR.ResumeLayout(false);
+            this.AddParamCont.ResumeLayout(false);
+            this.BtnLaunchCont.ResumeLayout(false);
             this.argContents.ResumeLayout(false);
             this.missingPanel.ResumeLayout(false);
             this.missingPanel.PerformLayout();
-            this.BtnLaunchCont.ResumeLayout(false);
-            this.AddParamCont.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

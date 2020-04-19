@@ -11,14 +11,14 @@ namespace Net35
 {
     public partial class GameInfo : Button
     {
-        public static event EventHandler StatClick;
+        public static event EventHandler<NudgeOnClick> StatClick;
 
-        protected virtual void OnStatClick(EventArgs e)
+        protected virtual void OnStatClick(NudgeOnClick e)
         {
-            EventHandler handler = StatClick;
+            EventHandler<NudgeOnClick> handler = StatClick;
 
             if (handler != null)
-                handler(this, EventArgs.Empty);
+                handler(this, e);
         }
 
         private static GameInfo lastClickedControl = null;
@@ -39,6 +39,9 @@ namespace Net35
 
             Click += (o, e) =>
             {
+                if (lastClickedControl == this)
+                    return;
+
                 if (argPanels.Tabs.Length > 0)
                     argPanels.Tabs.ElementAt(argPanels.Tabs.Length - 1).PerformClick();
 
@@ -57,7 +60,7 @@ namespace Net35
 
                 lastClickedControl = this;
 
-                OnStatClick(EventArgs.Empty);
+                OnStatClick(new NudgeOnClick(this.modInfo.ModFolder));
             };
         }
 
@@ -91,6 +94,29 @@ namespace Net35
         public GameInfo()
         {
             Initialize();
+        }
+    }
+
+    public class NudgeOnClick : EventArgs
+    {
+        private string modname;
+
+        public NudgeOnClick(string modname)
+        {
+            this.modname = modname;
+        }
+
+        public string NewArgs
+        {
+            get
+            {
+                string[] cfgstr = HLTools.GetCFGContents(modname);
+
+                if (cfgstr != null)
+                    return HLTools.MergeDupStrings(cfgstr);
+
+                return string.Empty;
+            }
         }
     }
 }

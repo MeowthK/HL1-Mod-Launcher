@@ -16,23 +16,23 @@ namespace Net35
             var filename = "hl.exe";
             var proc_arg = string.Empty;
 
-            if (mod.Executable == string.Empty)
+            if (CheckExecutableExists(mod.Executable))
+                filename = mod.Executable;
+            else if (CheckExecutableExists("hl.exe"))
             {
-                if (!CheckExecutableExists("hl.exe"))
-                {
-                    System.Windows.Forms.MessageBox.Show("hl.exe was not found, cannot launch the game.", "Executable Not Found", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                    return;
-                }
-
+                filename = "hl.exe";
                 proc_arg = " -game " + mod.ModFolder;
             }
-            else if (!CheckExecutableExists(mod.Executable))
+            else if (CheckExecutableExists("hl2.exe")) // test source compat
             {
-                System.Windows.Forms.MessageBox.Show(mod.Executable + " was not found and hl.exe is non-existent, cannot launch the game.", "Executable Not Found", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return;
+                filename = "hl2.exe";
+                proc_arg = " -game " + mod.ModFolder;
             }
             else
-                filename = mod.Executable;
+            {
+                System.Windows.Forms.MessageBox.Show("hl.exe was not found, cannot launch the game.", "Executable Not Found", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return;
+            }
 
             proc_arg += " " + arguments;
 
@@ -43,6 +43,34 @@ namespace Net35
                 process.StartInfo.Arguments = proc_arg;
                 process.Start();
             }
+        }
+
+        public static string MergeDupStrings(string[] a)
+        {
+            var c = new System.Collections.Generic.HashSet<string>();
+            string c_s = string.Empty;
+
+            if (a != null)
+            {
+                foreach (var a_s in a)
+                    c.Add(a_s);
+            }
+
+            foreach (var c_ss in c)
+                c_s += c_ss + " ";
+
+            return c_s;
+        }
+
+        public static string[] GetCFGContents(string modname)
+        {
+            string cfgRoot = System.IO.Directory.GetCurrentDirectory() + "//modlauncher//" + modname + ".cfg";
+            string[] retval = null;
+
+            if (System.IO.File.Exists(cfgRoot))
+                return System.IO.File.ReadAllLines(cfgRoot);
+
+            return retval;
         }
     }
 }

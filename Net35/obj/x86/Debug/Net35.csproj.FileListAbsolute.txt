@@ -11,3 +11,5 @@ C:\Users\MeowthK\Documents\Visual Studio 2010\Projects\Net35\Net35\obj\x86\Debug
 C:\Users\MeowthK\Documents\Visual Studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.csproj.GenerateResource.Cache
 C:\Users\MeowthK\Documents\Visual Studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.exe
 C:\Users\MeowthK\Documents\Visual Studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.pdb
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.csprojResolveAssemblyReference.cache
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\bin\Debug\HL Mod Launcher.exe.config

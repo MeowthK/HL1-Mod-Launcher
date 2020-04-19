@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net35", "Net35\Net35.csproj", "{3F81375D-49DC-4B18-B419-B5F8C3136EB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLModLauncher", "Net35\HLModLauncher.csproj", "{3F81375D-49DC-4B18-B419-B5F8C3136EB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

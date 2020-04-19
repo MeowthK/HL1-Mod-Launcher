@@ -1,0 +1,13 @@
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\bin\Debug\HL Mod Launcher.exe.config
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\bin\Debug\HL Mod Launcher.exe
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\bin\Debug\HL Mod Launcher.pdb
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.CBArg.resources
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.FlatButton.resources
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.Form1.resources
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.GameInfo.resources
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.TabPanels.resources
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\HLModLauncher.Properties.Resources.resources
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\Net35.RoundTextbox.resources
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\HLModLauncher.csproj.GenerateResource.Cache
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\HL Mod Launcher.exe
+C:\Users\MeowthK\documents\visual studio 2010\Projects\Net35\Net35\obj\x86\Debug\HL Mod Launcher.pdb

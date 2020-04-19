@@ -24,6 +24,7 @@ namespace Net35
             List<Item> modexecs = new List<Item>();
             bool fileExists = false;
             Category[] baseCat = null;
+            Category[] saveCat = GetCFGContents();
 
             if (File.Exists(cfgFile))
             {
@@ -105,12 +106,17 @@ namespace Net35
             if (modCats.ContainsKey("all"))
                 baseCat = modCats.FirstOrDefault(p => p.Key == "all").Value;
 
-            foreach (var mod in ModFinder.GetMods)
+            var mods = ModFinder.GetMods;
+            int ind = mods.Length - 1;
+
+            foreach (var mod in mods)
             {
                 missingPanel.Dispose();
 
                 var gameinfo = new GameInfo(mod);
                 var categoryList = new List<FlatButton>();
+
+                Item[] qualItem = QualifiedItem(GetCFGContents(), mod.ModFolder);
 
                 if (fileExists && modCats.ContainsKey(mod.ModFolder))
                 {
@@ -143,6 +149,8 @@ namespace Net35
                                 arg.Argument = cv.Name;
                                 arg.Text = cv.Description;
                                 arg.Dock = DockStyle.Top;
+                                arg.Checked = qualItem != null && qualItem.FirstOrDefault(p => p.Name == arg.Argument) != null;
+
                                 args.Add(arg);
                             }
 
@@ -162,8 +170,18 @@ namespace Net35
                     foreach (var cat in baseCat)
                     {
                         List<CBArg> args = new List<CBArg>();
+
                         var fbtn = new FlatButton();
                         fbtn.Text = cat.Name;
+
+                        categoryList.ForEach((a) =>
+                        {
+                            if (a.Text == cat.Name)
+                            {
+                                fbtn = a;
+                                return;
+                            }
+                        });
 
                         foreach (var cv in cat.Items)
                         {
@@ -185,6 +203,8 @@ namespace Net35
                                 arg.Argument = cv.Name;
                                 arg.Text = cv.Description;
                                 arg.Dock = DockStyle.Top;
+                                arg.Checked = qualItem != null && qualItem.FirstOrDefault(p => p.Name == arg.Argument) != null;
+
                                 args.Add(arg);
                             }
                         }
@@ -199,6 +219,8 @@ namespace Net35
 
                 gameinfo.ArgPanels.Tabs = categoryList.ToArray();
                 gameinfo.ContainerControl = argContents;
+                gameinfo.TabIndex = ind--;
+
                 gameList.Controls.Add(gameinfo);
             }
 
@@ -229,9 +251,6 @@ namespace Net35
                 }
             };
 
-            if (gameList.Controls.Count > 0 && gameList.Controls[gameList.Controls.Count - 1] is GameInfo)
-                (gameList.Controls[gameList.Controls.Count - 1] as GameInfo).PerformClick();
-
             CBArg.StatChecked += UpdateCommands;
             GameInfo.StatClick += UpdateCommands;
 
@@ -241,7 +260,87 @@ namespace Net35
                     HLTools.LaunchMod(GameInfo.SelectedMod.ModInfo, rtbAddParams.Text);
             };
 
+            if (gameList.Controls.Count > 0 && gameList.Controls[gameList.Controls.Count - 1] is GameInfo)
+            {
+                var gl = gameList.Controls[gameList.Controls.Count - 1] as GameInfo;
+                gl.PerformClick();
+            }
+
+            FormClosed += (o, ev) =>
+            {
+                if (GameInfo.SelectedMod != null)
+                {
+                    string param = rtbAddParams.Text.Trim();
+                    string direc = Directory.GetCurrentDirectory() + "//modlauncher//" + GameInfo.SelectedMod.ModInfo.ModFolder + ".cfg";
+
+                    try
+                    {
+                        if (rtbAddParams.Text.Trim().Length == 0 && File.Exists(param))
+                            File.Delete(direc);
+                        else
+                        {
+                            string[] cfgfile = GetArgs(param);
+                            File.WriteAllLines(direc, GetArgs(param));
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show(direc + " cannot be read.", "File IO Error");
+                    }
+                }
+            };
+
             base.OnLoad(e);
+        }
+
+        private Category[] GetCFGContents()
+        {
+            string cfgRoot = Directory.GetCurrentDirectory() + "//modlauncher";
+
+            if (Directory.Exists(cfgRoot))
+            {
+                List<Category> cats = new List<Category>();
+
+                string[] cfgFiles = Directory.GetFiles(cfgRoot, "*.cfg");
+
+                foreach (var cfgfile in cfgFiles)
+                {
+                    if (cfgfile.EndsWith("commandlist.cfg"))
+                        continue;
+
+                    Category cat = new Category();
+                    cat.Name = Path.GetFileName(cfgfile).Replace(".cfg", "");
+
+                    if (File.ReadAllLines(cfgfile).Length == 0)
+                        continue;
+
+                    foreach (var line in File.ReadAllLines(cfgfile))
+                    {
+                        Item item = new Item();
+                        item.Name = line;
+
+                        if (cat.Items == null || cat.Items.FirstOrDefault(p => p.Name == line) == null)
+                            cat.AddItem(item);
+                    }
+
+                    cats.Add(cat);
+                }
+
+                return cats.ToArray();
+            }
+
+            return new Category[0];
+        }
+
+        private Item[] QualifiedItem(Category[] saveCat, string modname)
+        {
+            foreach (var cat in saveCat)
+            {
+                if (cat.Name == modname)
+                    return cat.Items;
+            }
+
+            return null;
         }
 
         private void UpdateCommands(object sender, EventArgs e)
@@ -254,25 +353,16 @@ namespace Net35
                 foreach (var tab in gi)
                     arg += tab.Arguments;
 
-                rtbAddParams.Text = MergeDupStrings(GetArgs(arg));
+                if (e is NudgeOnClick && (e as NudgeOnClick).NewArgs != string.Empty)
+                {
+                    string evar = (e as NudgeOnClick).NewArgs;
+                    string args = HLTools.MergeDupStrings(GetArgs(rtbAddParams.Text).Concat(GetArgs(evar)).ToArray());
+                    
+                    rtbAddParams.Text = args;
+                }
+                else
+                    rtbAddParams.Text = HLTools.MergeDupStrings(GetArgs(arg));
             }
-        }
-
-        private string MergeDupStrings(string[] a)
-        {
-            HashSet<string> c = new HashSet<string>();
-            string c_s = string.Empty;
-
-            if (a != null)
-            {
-                foreach (var a_s in a)
-                    c.Add(a_s);
-            }
-
-            foreach (var c_ss in c)
-                c_s += c_ss + " ";
-
-            return c_s;
         }
 
         private string[] GetArgs(string arg)
