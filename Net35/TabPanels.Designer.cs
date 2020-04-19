@@ -36,7 +36,7 @@
             // 
             this.content.AutoScroll = true;
             this.content.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(60)))), ((int)(((byte)(82)))));
-            this.content.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.content.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.content.Dock = System.Windows.Forms.DockStyle.Fill;
             this.content.Location = new System.Drawing.Point(0, 49);
             this.content.Name = "content";

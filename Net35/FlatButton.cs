@@ -14,6 +14,40 @@ namespace Net35
         private Panel panel = null;
         public Panel Panel { get { return panel; } set { panel = value; } }
 
+        public void CheckAll(bool value)
+        {
+            if (panel == null)
+                return;
+
+            foreach (Control arg in panel.Controls)
+            {
+                if (arg is CBArg)
+                {
+                    var cb = arg as CBArg;
+                    cb.Checked = value;
+                }
+            }
+        }
+
+        public CBArg SearchByArgument(string arg)
+        {
+            if (panel == null)
+                return null;
+
+            foreach (Control arg2 in panel.Controls)
+            {
+                if (arg2 is CBArg)
+                {
+                    var cb = arg2 as CBArg;
+
+                    if (cb.Argument == arg)
+                        return cb;
+                }
+            }
+
+            return null;
+        }
+
         public string Arguments
         {
             get
@@ -92,6 +126,9 @@ namespace Net35
 
             Click += (o, e) =>
             {
+                if (lastClicked == this)
+                    return;
+
                 if (lastClicked != null)
                 {
                     lastClicked.Panel.Hide();

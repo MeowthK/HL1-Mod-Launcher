@@ -19,88 +19,117 @@ namespace Net35
 
         protected override void OnLoad(EventArgs e)
         {
-            string cfgFile = Directory.GetCurrentDirectory() + "//modlauncher//commandlist.cfg";
+            string cfgFile = Directory.GetCurrentDirectory() + "\\modlauncher\\commandlist.cfg";
             Dictionary<string, Category[]> modCats = new Dictionary<string, Category[]>();
             List<Item> modexecs = new List<Item>();
             bool fileExists = false;
             Category[] baseCat = null;
             Category[] saveCat = GetCFGContents();
 
-            if (File.Exists(cfgFile))
+            if (!File.Exists(cfgFile))
             {
-                fileExists = true;
+                string newFileContents =
+                    "// USAGE(Ignore outer brackets):\n" +
+                    "//\n" +
+                    "// [modname][(Optional)<exe file>]\n" +
+                    "// {\n" +
+                    "//		[\"Category Name\"]\n" +
+                    "//		[[-argument]] [[Argument description.]]\n" +
+                    "// }\n" +
+                    "\n" +
+                    "all\n" +
+                    "{\n" +
+                    "   \"Commonly Used\"\n" +
+                    "   [+console 1]            [Enable developer console]\n" +
+                    "   [-dev]                  [Enable developer options]\n" +
+                    "   [-nointro]              [Skip game intro]\n" +
+                    "}\n\n" +
+                    "valve<hl.exe>\n" +
+                    "{\n" +
+                    "   \"Singleplayer Options\"\n" +
+	                "   [+sv_lan 1]             [Play on LAN]\n" +
+	                "   [+map c0a0]             [Start a new campaign]\n" +
+	                "   [+sv_cheats 1]          [Enable cheats]\n" +
+                    "}\n";
 
-                string cnt = File.ReadAllText(cfgFile);
+                if (!Directory.Exists(Directory.GetCurrentDirectory() + "\\modlauncher"))
+                    Directory.CreateDirectory(Directory.GetCurrentDirectory() + "\\modlauncher");
 
-                // ignore comments
-                while (cnt.Contains("//"))
+                File.WriteAllText(cfgFile, newFileContents);
+            }
+
+            fileExists = true;
+
+            string cnt = File.ReadAllText(cfgFile);
+
+            // ignore comments
+            while (cnt.Contains("//"))
+            {
+                int start = cnt.IndexOf("//");
+                int index = start + 1;
+                while (index < cnt.Length && cnt[index] != '\n')
+                    index++;
+
+                cnt = cnt.Remove(start, index - start);
+            }
+
+            try
+            {
+                foreach (var snippet in cnt.Split('}'))
                 {
-                    int start = cnt.IndexOf("//");
-                    int index = start + 1;
-                    while (index < cnt.Length && cnt[index] != '\n')
-                        index++;
+                    var catList = new List<Category>();
+                    var strimmed = snippet.Trim();
 
-                    cnt = cnt.Remove(start, index - start);
-                }
+                    if (strimmed.Length == 0)
+                        continue;
 
-                try
-                {
-                    foreach (var snippet in cnt.Split('}'))
+                    // get mod name
+                    string modname = strimmed.Remove(strimmed.IndexOf('{')).Trim();
+
+                    if (modname.Contains('<'))
                     {
-                        var catList = new List<Category>();
-                        var strimmed = snippet.Trim();
+                        Item item = new Item();
 
-                        if (strimmed.Length == 0)
-                            continue;
+                        item.Description = GetSubString(modname, '<', '>').Trim();
+                        modname = strimmed.Remove(modname.IndexOf('<')).Trim();
+                        item.Name = modname;
 
-                        // get mod name
-                        string modname = strimmed.Remove(strimmed.IndexOf('{')).Trim();
+                        modexecs.Add(item);
+                    }
 
-                        if (modname.Contains('<'))
+                    // get category name
+                    while (strimmed.Contains('"'))
+                    {
+                        Category category_o = new Category();
+
+                        string category = GetSubString(strimmed, '"', '"');
+                        strimmed = strimmed.Replace('"' + category + '"', "").Trim();
+                        category_o.Name = category.Trim();
+
+                        while (strimmed.Contains('[') && (strimmed.IndexOf('[') < strimmed.IndexOf('"') || !strimmed.Contains('"')))
                         {
                             Item item = new Item();
 
-                            item.Description = GetSubString(modname, '<', '>').Trim();
-                            modname = strimmed.Remove(modname.IndexOf('<')).Trim();
-                            item.Name = modname;
+                            string argument = GetSubString(strimmed, '[', ']');
+                            strimmed = strimmed.Replace('[' + argument + ']', "");
+                            item.Name = argument.Trim();
 
-                            modexecs.Add(item);
+                            string description = GetSubString(strimmed, '[', ']');
+                            strimmed = strimmed.Replace('[' + description + ']', "");
+                            item.Description = description.Trim();
+
+                            category_o.AddItem(item);
                         }
 
-                        // get category name
-                        while (strimmed.Contains('"'))
-                        {
-                            Category category_o = new Category();
-
-                            string category = GetSubString(strimmed, '"', '"');
-                            strimmed = strimmed.Replace('"' + category + '"', "").Trim();
-                            category_o.Name = category.Trim();
-
-                            while (strimmed.Contains('[') && (strimmed.IndexOf('[') < strimmed.IndexOf('"') || !strimmed.Contains('"')))
-                            {
-                                Item item = new Item();
-
-                                string argument = GetSubString(strimmed, '[', ']');
-                                strimmed = strimmed.Replace('[' + argument + ']', "");
-                                item.Name = argument.Trim();
-
-                                string description = GetSubString(strimmed, '[', ']');
-                                strimmed = strimmed.Replace('[' + description + ']', "");
-                                item.Description = description.Trim();
-
-                                category_o.AddItem(item);
-                            }
-
-                            catList.Add(category_o);
-                        }
-
-                        modCats.Add(modname, catList.ToArray());
+                        catList.Add(category_o);
                     }
+
+                    modCats.Add(modname, catList.ToArray());
                 }
-                catch
-                {
-                    MessageBox.Show("commandlist.cfg is malformed.", "File Parse Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+            }
+            catch
+            {
+                MessageBox.Show("commandlist.cfg is malformed.", "File Parse Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             if (modCats.ContainsKey("all"))
@@ -257,7 +286,7 @@ namespace Net35
             btnLaunch_NR.Click += (o, ev) =>
             {
                 if (GameInfo.SelectedMod != null)
-                    HLTools.LaunchMod(GameInfo.SelectedMod.ModInfo, rtbAddParams.Text);
+                    HLTools.LaunchMod(GameInfo.SelectedMod.ModInfo, rtbAddParams_NR.Text);
             };
 
             if (gameList.Controls.Count > 0 && gameList.Controls[gameList.Controls.Count - 1] is GameInfo)
@@ -266,36 +295,64 @@ namespace Net35
                 gl.PerformClick();
             }
 
-            FormClosed += (o, ev) =>
-            {
-                if (GameInfo.SelectedMod != null)
-                {
-                    string param = rtbAddParams.Text.Trim();
-                    string direc = Directory.GetCurrentDirectory() + "//modlauncher//" + GameInfo.SelectedMod.ModInfo.ModFolder + ".cfg";
+            FormClosed += SaveConfig;
+            btnInf.Click += (o, ev) => { HLModLauncher.FrmAuthor.ShowForm(); };
+            btnMinimize.Click += (o, ev) => { this.WindowState = FormWindowState.Minimized; };
+            base.OnLoad(e);
+        }
 
+        private void SaveConfig(object sender, EventArgs e)
+        {
+            if (GameInfo.SelectedMod != null)
+            {
+                string param = rtbAddParams_NR.Text.Trim();
+                string direc = Directory.GetCurrentDirectory() + "\\modlauncher\\" + GameInfo.SelectedMod.ModInfo.ModFolder + ".cfg";
+
+                if (param.Length == 0 && File.Exists(direc))
+                {
                     try
                     {
-                        if (rtbAddParams.Text.Trim().Length == 0 && File.Exists(param))
-                            File.Delete(direc);
-                        else
-                        {
-                            string[] cfgfile = GetArgs(param);
-                            File.WriteAllLines(direc, GetArgs(param));
-                        }
+                        File.Delete(direc);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show(direc + " cannot be read.", "File IO Error");
+                        MessageBox.Show("Cannot delete " + direc + ". Reason: " + ex.Message);
                     }
                 }
-            };
+                else
+                {
+                    string[] cfgfile = GetArgs(param);
+                    string moddirec = Directory.GetCurrentDirectory() + "\\modlauncher";
 
-            base.OnLoad(e);
+                    if (!Directory.Exists(moddirec))
+                        Directory.CreateDirectory(moddirec);
+                    else
+                    {
+                        foreach (var file in Directory.GetFiles(moddirec))
+                        {
+                            if (File.ReadAllText(file).Trim().Length == 0)
+                            {
+                                try
+                                {
+                                    File.Delete(file);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Cannot delete " + file + ". Reason: " + ex.Message);
+                                }
+                            }
+                        }
+                    }
+
+                    if (param.Length > 0)
+                        File.WriteAllLines(direc, GetArgs(param));
+                }
+            }
         }
 
         private Category[] GetCFGContents()
         {
-            string cfgRoot = Directory.GetCurrentDirectory() + "//modlauncher";
+            string cfgRoot = Directory.GetCurrentDirectory() + "\\modlauncher";
 
             if (Directory.Exists(cfgRoot))
             {
@@ -356,12 +413,12 @@ namespace Net35
                 if (e is NudgeOnClick && (e as NudgeOnClick).NewArgs != string.Empty)
                 {
                     string evar = (e as NudgeOnClick).NewArgs;
-                    string args = HLTools.MergeDupStrings(GetArgs(rtbAddParams.Text).Concat(GetArgs(evar)).ToArray());
+                    string args = HLTools.MergeDupStrings(GetArgs(rtbAddParams_NR.Text).Concat(GetArgs(evar)).ToArray());
                     
-                    rtbAddParams.Text = args;
+                    rtbAddParams_NR.Text = args;
                 }
                 else
-                    rtbAddParams.Text = HLTools.MergeDupStrings(GetArgs(arg));
+                    rtbAddParams_NR.Text = HLTools.MergeDupStrings(GetArgs(arg));
             }
         }
 

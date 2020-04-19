@@ -42,7 +42,7 @@ namespace Net35
                     string dir = string.Empty;
 
                     for (int j = 0; j < gch.Length; j++)
-                        if (File.Exists(directories[i] + "//" + gch[j]))
+                        if (File.Exists(directories[i] + "\\" + gch[j]))
                             gchi = j;
 
                     if (gchi == -1)
@@ -67,7 +67,7 @@ namespace Net35
                             continue;
                     }
                     else
-                        dir = directories[i] + "//" + gch[gchi];
+                        dir = directories[i] + "\\" + gch[gchi];
 
                     //game info
                     string modname = Path.GetFileName(directories[i]);
@@ -101,12 +101,12 @@ namespace Net35
                     }
 
                     //get icon file (if there's any)
-                    if (File.Exists(directories[i] + "//game.ico"))
-                        icon = System.Drawing.Image.FromFile(directories[i] + "//game.ico");
-                    else if (File.Exists(directories[i] + "//" + modname + ".ico"))
-                        icon = System.Drawing.Image.FromFile(directories[i] + "//" + modname + ".ico");
-                    else if (File.Exists(directories[i] + "//resource//game.ico"))
-                        icon = System.Drawing.Image.FromFile((directories[i] + "//resource//game.ico"));
+                    if (File.Exists(directories[i] + "\\game.ico"))
+                        icon = System.Drawing.Image.FromFile(directories[i] + "\\game.ico");
+                    else if (File.Exists(directories[i] + "\\" + modname + ".ico"))
+                        icon = System.Drawing.Image.FromFile(directories[i] + "\\" + modname + ".ico");
+                    else if (File.Exists(directories[i] + "\\resource//game.ico"))
+                        icon = System.Drawing.Image.FromFile((directories[i] + "\\resource\\game.ico"));
                     else
                     {
                         foreach (string file in Directory.GetFiles(directories[i]))

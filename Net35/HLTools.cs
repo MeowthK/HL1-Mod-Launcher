@@ -7,7 +7,7 @@ namespace Net35
     {
         public static bool CheckExecutableExists(string execFile)
         {
-            return System.IO.File.Exists(System.IO.Directory.GetCurrentDirectory() + "//" + execFile);
+            return System.IO.File.Exists(System.IO.Directory.GetCurrentDirectory() + "\\" + execFile);
         }
 
         public static void LaunchMod(HLMOD mod, string arguments)
@@ -64,7 +64,7 @@ namespace Net35
 
         public static string[] GetCFGContents(string modname)
         {
-            string cfgRoot = System.IO.Directory.GetCurrentDirectory() + "//modlauncher//" + modname + ".cfg";
+            string cfgRoot = System.IO.Directory.GetCurrentDirectory() + "\\modlauncher\\" + modname + ".cfg";
             string[] retval = null;
 
             if (System.IO.File.Exists(cfgRoot))

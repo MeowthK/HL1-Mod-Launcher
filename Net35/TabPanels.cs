@@ -8,7 +8,6 @@ namespace Net35
 {
     public partial class TabPanels : UserControl
     {
-        private bool isHeightAdjusted = false;
         private FlatButton[] tabs_ = null;
         public FlatButton[] Tabs { get { return tabs_; }
             set
